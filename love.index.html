@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Love 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Georgia', serif;
+    background: linear-gradient(to bottom, #1a001f, #330033);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+    transition: background 0.5s, color 0.5s;
+}
+
+/* PASSWORD SCREEN */
+#password-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+input {
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 20px;
+    background: hotpink;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* FADE IN MAIN CONTENT */
+#main-content {
+    display: none;
+    opacity: 0;
+    padding: 30px;
+    transition: opacity 2s ease;
+}
+
+/* BOUQUET */
+.bouquet-section {
+    margin-top: 40px;
+}
+
+.bouquet {
+    font-size: 90px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.bouquet-text {
+    font-size: 20px;
+    margin-top: 15px;
+    font-style: italic;
+    color: pink;
+}
+
+/* BIG FLOWER POP-UP */
+#bigFlower {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    font-size: 150px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* LETTER */
+.letter {
+    max-width: 750px;
+    margin: 60px auto;
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* PHOTO GALLERY */
+.gallery img {
+    width: 250px;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+/* HEART CURSOR */
+.heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 18px;
+    animation: fade 1s linear forwards;
+}
+
+@keyframes fade {
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* FLOATING PETALS */
+.petal {
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    animation: petalFall linear infinite;
+}
+
+@keyframes petalFall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* DARK MODE */
+.dark-mode {
+    background: #fff;
+    color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .letter { font-size: 16px; padding: 20px; }
+    .gallery img { width: 90%; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BIG FLOWER POP-UP -->
+<div id="bigFlower">🌸</div>
+
+<!-- PASSWORD SCREEN -->
+<div id="password-screen">
+    <h2>Enter Our Special Date 💕</h2>
+    <input type="password" id="passwordInput" placeholder="09-01-2024">
+    <button onclick="checkPassword()">Unlock</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+    <audio id="bgMusic" src="music.mp3" loop></audio>
+    <button onclick="toggleDarkMode()">🌙 Toggle Mode</button>
+
+    <!-- BOUQUET -->
+    <div class="bouquet-section">
+        <div class="bouquet">💐🌹🌸🌷🌺</div>
+        <div class="bouquet-text">
+            flowers for u since i didnt give u one on valentines day 💕
+        </div>
+    </div>
+
+    <!-- LOVE LETTER -->
+    <div class="letter" id="letter"></div>
+
+    <!-- PHOTOS -->
+    <h2>Our Memories 📸</h2>
+    <div class="gallery">
+        <img src="photo1.JPG">
+        <img src="photo2.JPG">
+        <img src="photo3.JPG">
+        <img src="photo4.JPG">
+    </div>
+
+    <!-- SPOTIFY -->
+    <h2>Our Playlist 🎵</h2>
+    <iframe style="border-radius:12px" 
+    src="https://open.spotify.com/embed/playlist/1OHBuBXf4RZPZUHkGkuVoq" 
+    width="100%" height="380" frameBorder="0" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+    </iframe>
+
+    <!-- LETTERBOXD -->
+    <h2>Movies That Remind Me of Us 🎬</h2>
+    <a href="https://boxd.it/SFLoy" target="_blank">
+        <button>View Our Letterboxd List 💕</button>
+    </a>
+
+</div>
+
+<script>
+const correctPassword = "09-01-2024";
+
+/* CHECK PASSWORD AND UNLOCK */
+function checkPassword() {
+    const entered = document.getElementById("passwordInput").value;
+    if (entered === correctPassword) {
+        document.getElementById("password-screen").style.display = "none";
+
+        const main = document.getElementById("main-content");
+        main.style.display = "block";
+        setTimeout(() => { main.style.opacity = "1"; }, 100);
+
+        document.getElementById("bgMusic").play();
+        typeWriter();
+        showBigFlower();
+        generatePetals();
+    } else {
+        alert("Wrong date baby 😭");
+    }
+}
+
+/* TYPEWRITER EFFECT FOR LETTER */
+const text = `My Love,
+
+Hey baby HAHAHAHA, i just want to take a moment to tell you how much I truly love you...
+No matter what changes happen around us or within us, my feelings for you have never changed loveeee. I still love you the same way I did the very first time I realized you meant everything to me. If anything, my love has only grown stronger.
+
+I’m really sorryyyy babyyy na di ko ikaw na bigyan ng any gifts ng valentiness...
+
+You make me a better person every single day...
+
+Please know that despite everything, I will always adore you...
+
+Forever yours,
+Juliuzzz`;
+
+let i = 0;
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("letter").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 30);
+    }
+}
+
+/* BIG FLOWER POP-UP WITH ZOOM + SPIN */
+function showBigFlower() {
+    const bigFlower = document.getElementById("bigFlower");
+    bigFlower.style.opacity = "1";
+    bigFlower.style.transform = "translate(-50%, -50%) scale(1.5) rotate(360deg)";
+    setTimeout(() => {
+        bigFlower.style.opacity = "0";
+        bigFlower.style.transform = "translate(-50%, -50%) scale(0) rotate(0deg)";
+    }, 5000);
+}
+
+/* HEART CURSOR */
+document.addEventListener("mousemove", function(e) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = e.pageX + "px";
+    heart.style.top = e.pageY + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1000);
+});
+
+/* DARK MODE */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+}
+
+/* FLOATING PETALS */
+function generatePetals() {
+    for(let j=0; j<30; j++){
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.innerHTML = "🌸";
+        petal.style.left = Math.random()*100 + "vw";
+        petal.style.animationDuration = (5 + Math.random()*5) + "s";
+        petal.style.fontSize = (15 + Math.random()*20) + "px";
+        document.body.appendChild(petal);
+        setTimeout(()=> petal.remove(), 10000);
+    }
+    setInterval(()=>{
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.innerHTML = "🌸";
+        petal.style.left = Math.random()*100 + "vw";
+        petal.style.animationDuration = (5 + Math.random()*5) + "s";
+        petal.style.fontSize = (15 + Math.random()*20) + "px";
+        document.body.appendChild(petal);
+        setTimeout(()=> petal.remove(), 10000);
+    }, 500);
+}
+</script>
+
+</body>
+</html>
